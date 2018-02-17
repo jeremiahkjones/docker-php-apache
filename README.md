@@ -1,2 +1,2 @@
 # docker-php-apache
-Docker image for PHP7 and Apache2
+Dockerfile for creating stretto/php-apache
