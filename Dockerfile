@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:5.6-apache
 
 LABEL maintainer="Stretto Consulting <legal@strettoconsulting.com>"
 
@@ -38,11 +38,15 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install \
+    pdo \
     pdo_mysql \
     mysqli \
     json \
     readline \
-    gd
+    gd \
+    gettext \
+    mcrypt \
+    mbstring
 
 
 # configure gd
@@ -56,6 +60,9 @@ RUN ln -sf /dev/stdout /var/log/apache2/access.log \
 
 # Enable mods
 RUN a2enmod ssl rewrite headers
+
+# Install dev certificates
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=localhost"
 
 # install composer so we can run dump-autoload at startup
 ENV PATH="/composer/vendor/bin:$PATH" \
@@ -111,5 +118,6 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
 ENV PATH /var/www/node_modules/.bin:$PATH
-
+EXPOSE 80
+EXPOSE 443
 CMD ["apache2-foreground"]
