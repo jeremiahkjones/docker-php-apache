@@ -52,7 +52,8 @@ RUN docker-php-ext-install \
     gd \
     gettext \
     mcrypt \
-    mbstring
+    mbstring \
+    zip
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/apache2/access.log \
