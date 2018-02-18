@@ -25,7 +25,9 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     libldap2-dev \
     libmcrypt-dev \
     libpng-dev \
+    libpng12-dev \
     libpq-dev \
+    libgd-dev \
     libssl-dev \
     openssh-client \
     supervisor \
@@ -35,6 +37,10 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     dirmngr \
     && rm -r /var/lib/apt/lists/*
 
+# configure gd
+RUN docker-php-ext-configure gd \
+    --with-freetype-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install \
@@ -47,12 +53,6 @@ RUN docker-php-ext-install \
     gettext \
     mcrypt \
     mbstring
-
-
-# configure gd
-RUN docker-php-ext-configure gd \
-    --with-freetype-dir=/usr/include/freetype2 \
-    --with-jpeg-dir=/usr/include/
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/apache2/access.log \
