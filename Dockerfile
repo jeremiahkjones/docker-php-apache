@@ -35,6 +35,9 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     zip \
     gnupg \
     dirmngr \
+    libfontconfig1 \
+    libxrender1 \
+    libxext6 \
     && rm -r /var/lib/apt/lists/*
 
 # configure gd
