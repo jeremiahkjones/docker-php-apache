@@ -4,7 +4,7 @@ LABEL maintainer="Stretto Consulting <legal@strettoconsulting.com>"
 
 # Versions of major apps
 ENV COMPOSER_VERSION=1.5.6 \
-    NODE_VERSION=8.9.3
+    NODE_VERSION=8.9.4
 
 # other settings
 ENV NPM_CONFIG_LOGLEVEL=info
@@ -98,6 +98,7 @@ RUN set -ex \
     C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
     B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     56730D5401028683275BD23C23EFEFE93C4CFFFE \
+    77984A986EBC2AA786BC0F66B01FBB92821C587A \
   ; do \
     gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
     gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
@@ -121,7 +122,4 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-ENV PATH /var/www/node_modules/.bin:$PATH
-EXPOSE 80
-EXPOSE 443
 CMD ["apache2-foreground"]
